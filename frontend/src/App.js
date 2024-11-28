@@ -8,6 +8,10 @@ function App() {
   /**
    * Dadas atualizações no formulário, necessário atualizar a lista de recomendações
    */
+  
+  const handleFormUpdate = (newRecommendations) => {
+    setRecommendations(newRecommendations);
+  };
 
   return (
     <div className="bg-gray-100 min-h-screen flex flex-col justify-center items-center">
@@ -19,7 +23,7 @@ function App() {
           </p>
         </div>
         <div>
-          <Form />
+          <Form onFormUpdate={handleFormUpdate}/>        
         </div>
         <div>
           <RecommendationList recommendations={recommendations} />
