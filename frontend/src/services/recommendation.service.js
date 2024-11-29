@@ -41,30 +41,34 @@ const getRecommendations = (
   }
   */
 
+  // Rene: "selectedFeatures" é recebido como "undefined" se
+  //       nenhuma opção é selecionada.
+  const allPreferences = [...formData.selectedPreferences];
+  if (formData.selectedFeatures)
+    allPreferences.push(...formData.selectedFeatures);
+
+  console.log(allPreferences);
+
   // Rene: Se não houver preferências ou funcionalidades selecionadas,
   //       retorna lista vazia.
-  if ([...formData.selectedPreferences, ...formData.selectedFeatures].length === 0)
-    return [];
+  if (allPreferences.length === 0) return [];
 
   /** Rene: Se for selecionado "Produto Único", calcula a pontuação
-    *       baseado no número de ocorrências das preferências e
-    *       funcionalidades selecionadas.
-    */
+   *       baseado no número de ocorrências das preferências e
+   *       funcionalidades selecionadas.
+   */
   if (formData.selectedRecommendationType === 'SingleProduct') {
     const productScores = products.map((product) => {
-      const preferenceScore = formData.selectedPreferences.reduce(
+      const prefScore = allPreferences.reduce(
         (count, preference) =>
-          count + (product.preferences.includes(preference) ? 1 : 0),
-        0
-      );
-      const featureScore = formData.selectedFeatures.reduce(
-        (count, feature) =>
-          count + (product.features.includes(feature) ? 1 : 0),
+          count +
+          (product.preferences.includes(preference) ? 1 : 0) +
+          (product.features.includes(preference) ? 1 : 0),
         0
       );
       return {
         product,
-        score: preferenceScore + featureScore,
+        score: prefScore,
       };
     });
 
@@ -76,13 +80,13 @@ const getRecommendations = (
       },
       { score: -1 }
     );
-    return [bestProduct.product];
+    return (bestProduct.score > 0) ? [bestProduct.product] : [];
   }
 
   /** Rene: Se for selecionado "Múltiplos Produtos", todos
    *        os produtos que tiveram alguma de suas preferências
    *        ou funcionalidades selecionadas serão recomendados.
-    */
+   */
   return products.filter(
     (product) =>
       formData.selectedPreferences.some((preference) =>
