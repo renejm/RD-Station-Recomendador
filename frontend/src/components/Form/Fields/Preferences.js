@@ -29,7 +29,7 @@ function Preferences({
               value={preference}
               checked={currentPreferences.includes(preference)}
               onChange={() => handlePreferenceChange(preference)}
-              className="text-blue-500"
+              className="accent-cyan-600 text-cyan-600 border-teal-900"
             >
               {preference}
             </Checkbox>

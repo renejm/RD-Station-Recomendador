@@ -7,7 +7,7 @@ import useProducts from '../../hooks/useProducts';
 import useForm from '../../hooks/useForm';
 import useRecommendations from '../../hooks/useRecommendations';
 
-// Rene: Aqui recebo a função para atualizar a lista de recomendações.
+// Rene: Receber a função para atualizar a lista de recomendações.
 function Form({ onFormUpdate }) {
   const { preferences, features, products } = useProducts();
   const { formData, handleChange } = useForm({
@@ -20,19 +20,14 @@ function Form({ onFormUpdate }) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log('Form Data:', formData);
     const dataRecommendations = getRecommendations(formData);
+    // Rene: Chamar a função para atualizar a lista de recomendações.
     onFormUpdate(dataRecommendations);
-
-    /**
-     * Defina aqui a lógica para atualizar as recomendações e passar para a lista de recomendações
-     */
-    
   };
 
   return (
     <form
-      className="max-w-md mx-auto p-4 bg-white rounded-lg shadow-md"
+      className="max-w-md mx-auto p-4 bg-white rounded-lg shadow-md border-2 border-cyan-300"
       onSubmit={handleSubmit}
     >
       <Preferences
@@ -52,7 +47,9 @@ function Form({ onFormUpdate }) {
           handleChange('selectedRecommendationType', selected)
         }
       />
-      <SubmitButton text="Obter recomendação" />
+      <div className='w-full flex justify-center'>
+        <SubmitButton text="OBTER RECOMENDAÇÃO 🠆" />
+      </div>
     </form>
   );
 }

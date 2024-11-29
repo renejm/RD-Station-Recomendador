@@ -23,7 +23,7 @@ function Features({ features, selectedFeatures = [], onFeatureChange }) {
               value={feature}
               checked={currentFeatures.includes(feature)}
               onChange={() => handleFeatureChange(feature)}
-              className="text-green-500"
+              className="accent-cyan-600 text-cyan-600 border-teal-900"
             >
               {feature}
             </Checkbox>

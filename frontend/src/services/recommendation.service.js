@@ -18,10 +18,11 @@ const getRecommendations = (
    */
 
   /** Rene: O 3º bullet do item 5 do desafio coloca como requisito
-   *  funcional "Consumir API do json-server para dados de produtos",
-   *  porém, a lista completa de produtos, obtida em "product.service.js"
-   *  para exibição de preferências e funcionalidades, já é passada como
-   *  parâmetro para getRecommendations().
+   *        funcional "Consumir API do json-server para dados de
+   *        produtos", porém, a lista completa de produtos, obtida
+   *        em "product.service.js" para exibição de preferências
+   *        e funcionalidades, já é passada como parâmetro para
+   *        getRecommendations().
 
   try {
     const response = await axios.get(`${baseURL}/products`);
@@ -40,12 +41,15 @@ const getRecommendations = (
   }
   */
 
-  if (
-    formData.selectedPreferences.length === 0 &&
-    formData.selectedFeatures.length === 0
-  )
+  // Rene: Se não houver preferências ou funcionalidades selecionadas,
+  //       retorna lista vazia.
+  if ([...formData.selectedPreferences, ...formData.selectedFeatures].length === 0)
     return [];
 
+  /** Rene: Se for selecionado "Produto Único", calcula a pontuação
+    *       baseado no número de ocorrências das preferências e
+    *       funcionalidades selecionadas.
+    */
   if (formData.selectedRecommendationType === 'SingleProduct') {
     const productScores = products.map((product) => {
       const preferenceScore = formData.selectedPreferences.reduce(
@@ -66,16 +70,19 @@ const getRecommendations = (
 
     const bestProduct = productScores.reduce(
       (best, current) => {
+        // Rene: Esta lógica garante que, em caso de empate,
+        //       o último produto válido será recomendado.
         return current.score < best.score ? best : current;
       },
       { score: -1 }
     );
-
-    console.log(productScores);
-
     return [bestProduct.product];
   }
 
+  /** Rene: Se for selecionado "Múltiplos Produtos", todos
+   *        os produtos que tiveram alguma de suas preferências
+   *        ou funcionalidades selecionadas serão recomendados.
+    */
   return products.filter(
     (product) =>
       formData.selectedPreferences.some((preference) =>
