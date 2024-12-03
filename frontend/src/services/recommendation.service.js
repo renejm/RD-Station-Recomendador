@@ -47,9 +47,7 @@ const getRecommendations = (
   if (formData.selectedFeatures)
     allPreferences.push(...formData.selectedFeatures);
 
-  console.log(allPreferences);
-
-  // Rene: Se não houver preferências ou funcionalidades selecionadas,
+    // Rene: Se não houver preferências ou funcionalidades selecionadas,
   //       retorna lista vazia.
   if (allPreferences.length === 0) return [];
 
